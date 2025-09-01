@@ -5,7 +5,7 @@
 Go, TS+Hono or even Flask for the backend but I'll slap you if it's Flask\
 Frontend vanilla\
 Groq API must be used for the website frontend generation during runtime, but feel free to experiment with equally quick generation\
-Embeddings not necessary
+Embeddings are necessary
 
 Use a dictionary and strip out words that can lead to inappropriate results
 
