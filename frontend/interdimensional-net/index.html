@@ -72,13 +72,33 @@
       gap: 1em;
       align-items: center;
     }
+
+    #skip-button {
+      background: none;
+      border: none;
+      color: #262A24;
+      cursor: pointer;
+      font-family: "PT Mono", monospace;
+      font-size: 1em;
+      text-decoration: underline;
+    }
+
+    #timer {
+      color: #262A24;
+      font-family: "PT Mono", monospace;
+      font-size: 1em;
+      margin-left: 1em;
+    }
   </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
   <nav>
     <div class="primary">
       <img src="/assets/logo.png" alt="DIFFUSION.SYSTEMS Logo" srcset="" id="logo"/>
       <button id="share-button">Share DIFFUSION</button>
+<button id="skip-button">(SKIP)</button>
+<span id="timer"></span>
     </div>
     <div id="generated-links">
       <span><a href="">{{link1}}</a></span>
@@ -118,7 +138,35 @@
       alert('No channel to share yet. Navigate to a channel first.');
     }
   });
+
+  const skipButton = document.querySelector("#skip-button")
+  skipButton.addEventListener('click', () => {
+    document.cookie = 'seed=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    document.cookie = 'seed_expires=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    window.location.reload();
+  });
+
+  const timerElement = document.getElementById('timer');
+  const seedExpiresCookie = document.cookie.split('; ').find(row => row.startsWith('seed_expires='));
+  if (seedExpiresCookie) {
+    const expires = new Date(parseInt(seedExpiresCookie.split('=')[1]));
+    const timerInterval = setInterval(() => {
+      const now = new Date();
+      const diff = expires - now;
+      if (diff <= 0) {
+        timerElement.textContent = 'EXPIRED';
+        clearInterval(timerInterval);
+        return;
+      }
+      const minutes = Math.floor((diff / 1000) / 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+  }
 </script>
+</body>
+
+</html>
 </body>
 
 </html>
