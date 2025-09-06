@@ -1,12 +1,14 @@
 import { Hono } from "hono";
+import { generateResponse } from "./api";
 
 const app = new Hono()
 const api = new Hono()
+const templateServer = new Hono()
 
-api.get('/:endpoint{.*}', (c) => {
-  
-  return c.text('endpoint : '+ c.req.path)
-})
+api.get('/:endpoint{.*}', generateResponse)
+
+templateServer.get("/")
+
 
 app.route("/api", api)
 

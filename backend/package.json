@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "module": "index.ts",
+  "module": "src/index.ts",
   "type": "module",
   "devDependencies": {
     "bun-types": "latest"
@@ -9,6 +9,10 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@cerebras/cerebras_cloud_sdk": "^1.50.0",
     "hono": "^4.9.5"
+  },
+  "scripts": {
+    "dev": "bun run --watch src/index.ts"
   }
 }
