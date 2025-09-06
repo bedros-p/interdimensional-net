@@ -75,11 +75,13 @@ templateServer.get('*', async (c) => {
   const prompt = `
 {CONCEPT - ${concept}}
 
+Use the concept literally - not always as a region. Do as you see fit. But it should be treated literally most of the time, instead of a simple name of a site - it should be the concept of the site.
+
 write HTML for the page located at **"${path}"**. Make up whatever API endpoint you need if using any. You are inside the body tag already. Use style tags and style the body tag as well. The page, if not on / or if it really has API interaction, should feature some sort of form>input / form>button to send data to an API. No \
 \`\`\`html, return in plaintext. Do not use local image paths (e.g., /images/foo.png); instead, you can use placeholder images from a service like https://placehold.co/.
 
-(HTML should be styled [ you can use bootstrap, it's all bundled in. site gotta be in dark mode though] - your view is in the "body>main" tag. do not modify width & height of body, or the layout. For layout, use your container.) Use Bootstrap classes extensively for layout, components (like navbars, cards, buttons), and typography to create a modern and responsive design.
-  `;
+(HTML should be styled [ you can use bootstrap, it's all bundled in. site gotta be in dark mode though, so make sure all text is readable] - your view is in the "body>main" tag. do not modify width & height of body, or the layout. For layout, use your container.) Use Bootstrap classes extensively for layout, components (like navbars, cards, buttons), and typography to create a modern and responsive design.
+It's dark mode, so make sure the text is white & readable on a dark bg`;
 
   try {
     const result = await client.chat.completions.create({
