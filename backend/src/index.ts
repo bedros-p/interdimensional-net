@@ -3,6 +3,8 @@ import { generateConceptFromSeed } from './concept-generator';
 import Cerebras from '@cerebras/cerebras_cloud_sdk';
 import * as fs from 'fs';
 import * as path from 'path';
+import { getCookie, setCookie } from 'hono/cookie';
+import { randomBytes } from 'crypto';
 
 const app = new Hono();
 const api = new Hono();
@@ -51,8 +53,21 @@ templateServer.get('*.png', (c) => {
 
 // the interdimensional cable server, this is where the magic happens
 templateServer.get('*', async (c) => {
+    let seed = getCookie(c, 'seed');
+  const querySeed = c.req.query('seed');
+  const acceptHeader = c.req.header('Accept');
+
+  if (querySeed && acceptHeader && acceptHeader.includes('text/html')) {
+    seed = querySeed;
+  } else if (!seed) {
+    seed = randomBytes(16).toString('hex');
+    setCookie(c, 'seed', seed, { maxAge: 60 * 60 }); // 1 hour expiry
+  }
+
   const path = c.req.path;
-  const concept = generateConceptFromSeed(path);
+  const concept = generateConceptFromSeed(seed);
+  
+  console.log(`Using seed: ${seed}`);
   
   const prompt = `
 {CONCEPT - ${concept}}

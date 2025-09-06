@@ -24,12 +24,11 @@
 
     /* ======== NAVBAR ======== */
     body>nav {
-      padding:1em;
-      background:rgba(from var(--primary) r g b / 0.3);
+      padding: 1em;
+      background: #fff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-
     }
     
     body>nav #logo {
@@ -52,12 +51,34 @@
       
       text-decoration: none;
     }
+
+    #share-button {
+      background: #262A24;
+      color: white;
+      border: 1px solid var(--primary);
+      padding: 1em 2em;
+      border-radius: 1em;
+      cursor: pointer;
+      font-family: "PT Mono", monospace;
+    }
+
+    #share-button:hover {
+      background: var(--primary);
+      color: #262A24;
+    }
+
+    nav>div.primary {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
   <nav>
-    <div>
+    <div class="primary">
       <img src="/assets/logo.png" alt="DIFFUSION.SYSTEMS Logo" srcset="" id="logo"/>
+      <button id="share-button">Share DIFFUSION</button>
     </div>
     <div id="generated-links">
       <span><a href="">{{link1}}</a></span>
@@ -70,6 +91,34 @@
   <main>
     {{content}}
   </main>
+<script>
+  const shareButton = document.getElementById('share-button');
+  shareButton.addEventListener('click', async () => {
+    const seed = document.cookie.split('; ').find(row => row.startsWith('seed='))?.split('=')[1];
+    if (seed) {
+      const shareUrl = `${window.location.origin}/?seed=${seed}`;
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Interdimensional Cable',
+            text: 'Check out this channel I found on the Interdimensional Cable!',
+            url: shareUrl,
+          });
+        } catch (error) {
+          console.error('Error sharing:', error);
+        }
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert('Link copied to clipboard!');
+        }, () => {
+          alert('Failed to copy link.');
+        });
+      }
+    } else {
+      alert('No channel to share yet. Navigate to a channel first.');
+    }
+  });
+</script>
 </body>
 
 </html>
