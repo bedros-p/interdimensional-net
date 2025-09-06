@@ -16,7 +16,9 @@ const client = new Cerebras({
 const htmlTemplatePath = path.join(import.meta.dir, '../../frontend/interdimensional-net/index.html');
 const htmlTemplate = fs.readFileSync(htmlTemplatePath, 'utf-8');
 const logoPath = path.join(import.meta.dir, '../../frontend/interdimensional-net/assets/logo.png');
+const faviconPath = path.join(import.meta.dir, '../../frontend/interdimensional-net/assets/favicon.png');
 const logo = fs.readFileSync(logoPath);
+const favicon = fs.readFileSync(faviconPath);
 
 // 1x1 transparent PNG
 const emptyPng = Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64');
@@ -32,6 +34,11 @@ templateServer.get('/assets/logo.png', (c) => {
     c.header('Content-Type', 'image/png');
     c.status(200);
     return c.body(logo);
+});
+templateServer.get('/assets/favicon.png', (c) => {
+    c.header('Content-Type', 'image/png');
+    c.status(200);
+    return c.body(favicon);
 });
 
 // Serve empty image for other .png requests
